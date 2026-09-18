@@ -192,3 +192,43 @@ FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_TYPE = 'BASE TABLE'
 ORDER BY TABLE_NAME;
 GO
+
+USE QuanLyThuVienDB;
+GO
+
+-- 1. TrangThai của thẻ: đổi sang BIT
+-- 1 = đang hoạt động
+-- 0 = không hoạt động
+ALTER TABLE THEDOCGIA
+ALTER COLUMN TrangThai BIT NULL;
+GO
+
+-- 2. Số lượng sách không được âm
+ALTER TABLE DAUSACH
+ADD CONSTRAINT CK_DauSach_SoLuong
+CHECK (SoLuongHienCo >= 0);
+GO
+
+-- 3. Hạn sử dụng thẻ phải >= ngày cấp
+ALTER TABLE THEDOCGIA
+ADD CONSTRAINT CK_TheDocGia_HanSuDung
+CHECK (HanSuDung >= NgayCap);
+GO
+
+-- 4. Ngày hẹn trả phải >= ngày mượn
+ALTER TABLE PHIEUMUON
+ADD CONSTRAINT CK_PhieuMuon_NgayHenTra
+CHECK (NgayHenTra >= NgayMuon);
+GO
+
+-- 5. Tên thể loại không được trùng
+ALTER TABLE THELOAI
+ADD CONSTRAINT UQ_TheLoai_TenTheLoai
+UNIQUE (TenTheLoai);
+GO
+
+-- 6. Mỗi độc giả chỉ có 1 thẻ đang hoạt động
+CREATE UNIQUE INDEX UX_TheDocGia_DocGia_Active
+ON THEDOCGIA(MaDocGia)
+WHERE TrangThai = 1;
+GO
