@@ -14,123 +14,327 @@
 
         private void InitializeComponent()
         {
-            this.lblTitle = new System.Windows.Forms.Label();
+            this.lblTitle =
+                new System.Windows.Forms.Label();
 
-            this.btnSachDangMuon =
+            this.dtTu =
+                new System.Windows.Forms.DateTimePicker();
+
+            this.dtDen =
+                new System.Windows.Forms.DateTimePicker();
+
+            this.btnThongKe =
                 new System.Windows.Forms.Button();
 
-            this.btnSachQuaHan =
-                new System.Windows.Forms.Button();
+            this.lblMuon =
+                new System.Windows.Forms.Label();
 
-            this.btnDocGiaDangMuon =
-                new System.Windows.Forms.Button();
+            this.lblQuaHan =
+                new System.Windows.Forms.Label();
 
-            this.btnPhieuPhat =
-                new System.Windows.Forms.Button();
+            this.lblMat =
+                new System.Windows.Forms.Label();
 
-            this.dgvThongKe =
+            this.lblHuHong =
+                new System.Windows.Forms.Label();
+
+            this.lblPhiPhat =
+                new System.Windows.Forms.Label();
+
+            this.dgvPhat =
                 new System.Windows.Forms.DataGridView();
 
+            this.btnDong =
+                new System.Windows.Forms.Button();
+
             ((System.ComponentModel.ISupportInitialize)
-                (this.dgvThongKe)).BeginInit();
+                (this.dgvPhat)).BeginInit();
 
             this.SuspendLayout();
 
+            // =====================================================
+            // TITLE
+            // =====================================================
             this.lblTitle.Font =
                 new System.Drawing.Font(
-                    "Times New Roman", 20F,
+                    "Times New Roman",
+                    20F,
                     System.Drawing.FontStyle.Bold);
 
             this.lblTitle.ForeColor =
                 System.Drawing.SystemColors.Highlight;
 
             this.lblTitle.Location =
-                new System.Drawing.Point(150, 20);
+                new System.Drawing.Point(
+                    185, 20);
 
             this.lblTitle.Size =
-                new System.Drawing.Size(650, 45);
+                new System.Drawing.Size(
+                    700, 45);
 
-            this.lblTitle.Text = "THỐNG KÊ THƯ VIỆN";
+            this.lblTitle.Text =
+                "THỐNG KÊ THƯ VIỆN";
 
             this.lblTitle.TextAlign =
                 System.Drawing.ContentAlignment.MiddleCenter;
 
-            SetupButton(
-                this.btnSachDangMuon,
-                "Sách đang mượn",
-                100, 90);
+            // =====================================================
+            // TỪ NGÀY
+            // =====================================================
+            AddLabel(
+                "Từ ngày:",
+                45, 95);
 
-            SetupButton(
-                this.btnSachQuaHan,
-                "Sách quá hạn",
-                300, 90);
+            this.dtTu.Location =
+                new System.Drawing.Point(
+                    115, 92);
 
-            SetupButton(
-                this.btnDocGiaDangMuon,
-                "Độc giả đang mượn",
-                500, 90);
+            this.dtTu.Size =
+                new System.Drawing.Size(
+                    170, 25);
 
-            SetupButton(
-                this.btnPhieuPhat,
-                "Phiếu phạt",
-                700, 90);
+            this.dtTu.Format =
+                System.Windows.Forms.DateTimePickerFormat.Short;
 
-            this.dgvThongKe.Location =
-                new System.Drawing.Point(40, 155);
+            // =====================================================
+            // ĐẾN NGÀY
+            // =====================================================
+            AddLabel(
+                "Đến ngày:",
+                330, 95);
 
-            this.dgvThongKe.Size =
-                new System.Drawing.Size(900, 400);
+            this.dtDen.Location =
+                new System.Drawing.Point(
+                    410, 92);
 
-            this.dgvThongKe.ReadOnly = true;
-            this.dgvThongKe.AllowUserToAddRows = false;
+            this.dtDen.Size =
+                new System.Drawing.Size(
+                    170, 25);
 
-            this.dgvThongKe.AutoSizeColumnsMode =
-                System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dtDen.Format =
+                System.Windows.Forms.DateTimePickerFormat.Short;
+
+            // =====================================================
+            // BUTTON THỐNG KÊ
+            // =====================================================
+            this.btnThongKe.Text =
+                "Thống kê";
+
+            this.btnThongKe.Location =
+                new System.Drawing.Point(
+                    630, 88);
+
+            this.btnThongKe.Size =
+                new System.Drawing.Size(
+                    130, 35);
+
+            // =====================================================
+            // KPI
+            // =====================================================
+            SetupKpiLabel(
+                this.lblMuon,
+                "Lượt sách mượn: 0",
+                50, 155);
+
+            SetupKpiLabel(
+                this.lblQuaHan,
+                "Sách quá hạn: 0",
+                360, 155);
+
+            SetupKpiLabel(
+                this.lblMat,
+                "Sách mất: 0",
+                670, 155);
+
+            SetupKpiLabel(
+                this.lblHuHong,
+                "Sách hư hỏng: 0",
+                200, 210);
+
+            SetupKpiLabel(
+                this.lblPhiPhat,
+                "Tổng phí phạt: 0 đ",
+                540, 210);
+
+            // =====================================================
+            // TIÊU ĐỀ BẢNG
+            // =====================================================
+            AddLabel(
+                "CHI TIẾT PHIẾU PHẠT",
+                45, 285);
+
+            // =====================================================
+            // DATAGRIDVIEW
+            // =====================================================
+            this.dgvPhat.Location =
+                new System.Drawing.Point(
+                    45, 315);
+
+            this.dgvPhat.Size =
+                new System.Drawing.Size(
+                    980, 285);
+
+            this.dgvPhat.AllowUserToAddRows =
+                false;
+
+            this.dgvPhat.AllowUserToDeleteRows =
+                false;
+
+            this.dgvPhat.ReadOnly = true;
+
+            this.dgvPhat.SelectionMode =
+                System.Windows.Forms
+                    .DataGridViewSelectionMode.FullRowSelect;
+
+            this.dgvPhat.AutoSizeColumnsMode =
+                System.Windows.Forms
+                    .DataGridViewAutoSizeColumnsMode.Fill;
+
+            // =====================================================
+            // ĐÓNG
+            // =====================================================
+            this.btnDong.Text =
+                "Đóng";
+
+            this.btnDong.Location =
+                new System.Drawing.Point(
+                    455, 625);
+
+            this.btnDong.Size =
+                new System.Drawing.Size(
+                    150, 40);
+
+            // =====================================================
+            // FORM
+            // =====================================================
+            this.AutoScaleDimensions =
+                new System.Drawing.SizeF(
+                    7F, 15F);
+
+            this.AutoScaleMode =
+                System.Windows.Forms.AutoScaleMode.Font;
 
             this.ClientSize =
-                new System.Drawing.Size(980, 590);
+                new System.Drawing.Size(
+                    1070, 700);
 
-            this.Controls.AddRange(
-                new System.Windows.Forms.Control[]
-                {
-                    lblTitle,
-                    btnSachDangMuon,
-                    btnSachQuaHan,
-                    btnDocGiaDangMuon,
-                    btnPhieuPhat,
-                    dgvThongKe
-                });
+            this.Controls.Add(
+                this.lblTitle);
 
-            this.Name = "FrmThongKe";
-            this.Text = "Thống kê";
+            this.Controls.Add(
+                this.dtTu);
+
+            this.Controls.Add(
+                this.dtDen);
+
+            this.Controls.Add(
+                this.btnThongKe);
+
+            this.Controls.Add(
+                this.lblMuon);
+
+            this.Controls.Add(
+                this.lblQuaHan);
+
+            this.Controls.Add(
+                this.lblMat);
+
+            this.Controls.Add(
+                this.lblHuHong);
+
+            this.Controls.Add(
+                this.lblPhiPhat);
+
+            this.Controls.Add(
+                this.dgvPhat);
+
+            this.Controls.Add(
+                this.btnDong);
+
+            this.Font =
+                new System.Drawing.Font(
+                    "Segoe UI",
+                    9.5F);
+
+            this.Name =
+                "FrmThongKe";
+
+            this.Text =
+                "Thống kê";
+
             this.StartPosition =
-                System.Windows.Forms.FormStartPosition.CenterScreen;
+                System.Windows.Forms
+                    .FormStartPosition.CenterParent;
 
             ((System.ComponentModel.ISupportInitialize)
-                (this.dgvThongKe)).EndInit();
+                (this.dgvPhat)).EndInit();
 
             this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
-        private void SetupButton(
-            System.Windows.Forms.Button btn,
-            string text, int x, int y)
+        // =========================================================
+        // LABEL THƯỜNG
+        // =========================================================
+        private void AddLabel(
+            string text,
+            int x,
+            int y)
         {
-            btn.Text = text;
-            btn.Location =
-                new System.Drawing.Point(x, y);
+            System.Windows.Forms.Label lbl =
+                new System.Windows.Forms.Label();
 
-            btn.Size =
-                new System.Drawing.Size(160, 40);
+            lbl.Text = text;
+            lbl.AutoSize = true;
+
+            lbl.Location =
+                new System.Drawing.Point(
+                    x, y);
+
+            this.Controls.Add(lbl);
+        }
+
+        // =========================================================
+        // LABEL KPI
+        // =========================================================
+        private void SetupKpiLabel(
+            System.Windows.Forms.Label lbl,
+            string text,
+            int x,
+            int y)
+        {
+            lbl.Text = text;
+
+            lbl.Location =
+                new System.Drawing.Point(
+                    x, y);
+
+            lbl.Size =
+                new System.Drawing.Size(
+                    280, 35);
+
+            lbl.Font =
+                new System.Drawing.Font(
+                    "Segoe UI",
+                    11F,
+                    System.Drawing.FontStyle.Bold);
         }
 
         private System.Windows.Forms.Label lblTitle;
 
-        private System.Windows.Forms.Button btnSachDangMuon;
-        private System.Windows.Forms.Button btnSachQuaHan;
-        private System.Windows.Forms.Button btnDocGiaDangMuon;
-        private System.Windows.Forms.Button btnPhieuPhat;
+        private System.Windows.Forms.DateTimePicker dtTu;
+        private System.Windows.Forms.DateTimePicker dtDen;
 
-        private System.Windows.Forms.DataGridView dgvThongKe;
+        private System.Windows.Forms.Button btnThongKe;
+
+        private System.Windows.Forms.Label lblMuon;
+        private System.Windows.Forms.Label lblQuaHan;
+        private System.Windows.Forms.Label lblMat;
+        private System.Windows.Forms.Label lblHuHong;
+        private System.Windows.Forms.Label lblPhiPhat;
+
+        private System.Windows.Forms.DataGridView dgvPhat;
+
+        private System.Windows.Forms.Button btnDong;
     }
 }
