@@ -78,6 +78,12 @@
     <Compile Include="FrmPhongTienNghi.Designer.cs">
       <DependentUpon>FrmPhongTienNghi.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmThongKe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmThongKe.Designer.cs">
+      <DependentUpon>FrmThongKe.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmTraPhong.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,7 @@
     <Compile Include="Services\DichVuService.cs" />
     <Compile Include="Services\KetQuaXuLy.cs" />
     <Compile Include="Services\PhongTienNghiService.cs" />
+    <Compile Include="Services\ThongKeService.cs" />
     <Compile Include="Services\TraPhongService.cs" />
     <EmbeddedResource Include="FrmTraPhong.resx">
       <DependentUpon>FrmTraPhong.cs</DependentUpon>
@@ -117,6 +124,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Database\QuanLyKhachSan.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

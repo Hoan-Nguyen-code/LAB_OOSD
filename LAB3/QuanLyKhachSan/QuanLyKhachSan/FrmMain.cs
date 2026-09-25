@@ -9,6 +9,13 @@ namespace QuanLyKhachSan
         {
             InitializeComponent();
         }
+        private void btnThongKe_Click(object sender, EventArgs e)
+        {
+            using (FrmThongKe f = new FrmThongKe())
+            {
+                f.ShowDialog(this);
+            }
+        }
         private void btnTraPhong_Click(object sender, EventArgs e)
         {
             using (FrmTraPhong f = new FrmTraPhong())

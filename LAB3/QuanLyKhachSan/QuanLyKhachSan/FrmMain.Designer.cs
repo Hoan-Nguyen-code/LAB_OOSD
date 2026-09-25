@@ -98,6 +98,8 @@
             this.btnThongKe.TabIndex = 6;
             this.btnThongKe.Text = "Thống kê";
             this.btnThongKe.UseVisualStyleBackColor = true;
+            this.btnThongKe.Click +=
+    new System.EventHandler(this.btnThongKe_Click);
 
             // btnThoat
             this.btnThoat.Location = new System.Drawing.Point(290, 300);
@@ -106,6 +108,8 @@
             this.btnThoat.TabIndex = 7;
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.Click +=
+    new System.EventHandler(this.btnThoat_Click);
 
             // FrmMain
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
