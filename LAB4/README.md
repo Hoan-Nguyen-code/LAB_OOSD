@@ -2,7 +2,7 @@
 
 ## 1. Thông tin sinh viên
 
-- **Họ và tên:** Nguyễn Đức Hoàn
+- **Họ và tên:** Nguyễn Đức Hoan
 - **MSSV:** 1250080056
 - **Môn học:** Phương pháp phát triển phần mềm hướng đối tượng (OOASD)
 - **Bài Lab:** LAB 4 – e-SHOPPING
