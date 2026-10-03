@@ -839,6 +839,10 @@ namespace shopABC.Forms
                         cboLoaiGiaoHang.SelectedValue
                     );
 
+                string maKhuVuc =
+                    cboKhuVucGiaoHang.SelectedValue
+                        .ToString();
+
                 // =============================================
                 // 3. THẺ ĐÃ DÙNG
                 // =============================================
@@ -859,32 +863,34 @@ namespace shopABC.Forms
                 object donHangId =
                     Db.Scalar(
                         @"INSERT INTO DONDATHANG
-                        (
-                            MaKhachHang,
-                            MaNguoiNhan,
-                            MaLoai,
-                            ThoiDiemDat,
-                            TongTienHang,
-                            ChiPhiGiaoHang,
-                            PhiGiaoDich,
-                            TongThanhToan,
-                            LoaiThe,
-                            BonSoCuoi
-                        )
-                        OUTPUT INSERTED.MaDonHang
-                        VALUES
-                        (
-                            @MaKhachHang,
-                            @MaNguoiNhan,
-                            @MaLoai,
-                            GETDATE(),
-                            @TongTienHang,
-                            @ChiPhiGiaoHang,
-                            @PhiGiaoDich,
-                            @TongThanhToan,
-                            @LoaiThe,
-                            @BonSoCuoi
-                        )",
+        (
+            MaKhachHang,
+            MaNguoiNhan,
+            MaLoai,
+            MaKhuVuc,
+            ThoiDiemDat,
+            TongTienHang,
+            ChiPhiGiaoHang,
+            PhiGiaoDich,
+            TongThanhToan,
+            LoaiThe,
+            BonSoCuoi
+        )
+        OUTPUT INSERTED.MaDonHang
+        VALUES
+        (
+            @MaKhachHang,
+            @MaNguoiNhan,
+            @MaLoai,
+            @MaKhuVuc,
+            GETDATE(),
+            @TongTienHang,
+            @ChiPhiGiaoHang,
+            @PhiGiaoDich,
+            @TongThanhToan,
+            @LoaiThe,
+            @BonSoCuoi
+        )",
 
                         new SqlParameter(
                             "@MaKhachHang",
@@ -899,6 +905,11 @@ namespace shopABC.Forms
                         new SqlParameter(
                             "@MaLoai",
                             maLoai
+                        ),
+
+                        new SqlParameter(
+                            "@MaKhuVuc",
+                            maKhuVuc
                         ),
 
                         new SqlParameter(

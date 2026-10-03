@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using shopABC.Adapters;
 using shopABC.Data;
@@ -50,8 +51,7 @@ namespace shopABC.Forms
 
             Label lblTitle = new Label();
             lblTitle.Text = "CHI TIẾT SẢN PHẨM";
-            lblTitle.Font =
-                new Font("Segoe UI", 20, FontStyle.Bold);
+            lblTitle.Font = new Font("Segoe UI", 20, FontStyle.Bold);
             lblTitle.AutoSize = true;
             lblTitle.Location = new Point(270, 25);
 
@@ -61,10 +61,8 @@ namespace shopABC.Forms
             picSanPham = new PictureBox();
             picSanPham.Location = new Point(50, 100);
             picSanPham.Size = new Size(250, 220);
-            picSanPham.BorderStyle =
-                BorderStyle.FixedSingle;
-            picSanPham.SizeMode =
-                PictureBoxSizeMode.Zoom;
+            picSanPham.BorderStyle = BorderStyle.FixedSingle;
+            picSanPham.SizeMode = PictureBoxSizeMode.Zoom;
 
             Controls.Add(picSanPham);
 
@@ -76,11 +74,8 @@ namespace shopABC.Forms
             lblGia = TaoLabel("", 340, 260);
             lblTinhTrang = TaoLabel("", 340, 300);
 
-            lblTen.Font =
-                new Font("Segoe UI", 12, FontStyle.Bold);
-
-            lblGia.Font =
-                new Font("Segoe UI", 12, FontStyle.Bold);
+            lblTen.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            lblGia.Font = new Font("Segoe UI", 12, FontStyle.Bold);
 
             Controls.Add(lblMa);
             Controls.Add(lblTen);
@@ -96,8 +91,7 @@ namespace shopABC.Forms
                 350
             );
 
-            lblMoTa.Font =
-                new Font("Segoe UI", 10, FontStyle.Bold);
+            lblMoTa.Font = new Font("Segoe UI", 10, FontStyle.Bold);
 
             Controls.Add(lblMoTa);
 
@@ -117,8 +111,7 @@ namespace shopABC.Forms
                 350
             );
 
-            lblThongSo.Font =
-                new Font("Segoe UI", 10, FontStyle.Bold);
+            lblThongSo.Font = new Font("Segoe UI", 10, FontStyle.Bold);
 
             Controls.Add(lblThongSo);
 
@@ -127,38 +120,28 @@ namespace shopABC.Forms
             txtThongSo.Size = new Size(350, 120);
             txtThongSo.Multiline = true;
             txtThongSo.ReadOnly = true;
-            txtThongSo.ScrollBars =
-                ScrollBars.Vertical;
+            txtThongSo.ScrollBars = ScrollBars.Vertical;
 
             Controls.Add(txtThongSo);
 
             // ===== BUTTON =====
             btnThemGioHang = new Button();
             btnThemGioHang.Text = "THÊM VÀO GIỎ";
-            btnThemGioHang.Location =
-                new Point(450, 540);
-            btnThemGioHang.Size =
-                new Size(160, 45);
-            btnThemGioHang.Click +=
-                BtnThemGioHang_Click;
+            btnThemGioHang.Location = new Point(450, 540);
+            btnThemGioHang.Size = new Size(160, 45);
+            btnThemGioHang.Click += BtnThemGioHang_Click;
 
             btnDong = new Button();
             btnDong.Text = "ĐÓNG";
-            btnDong.Location =
-                new Point(630, 540);
-            btnDong.Size =
-                new Size(150, 45);
-            btnDong.Click +=
-                (s, e) => Close();
+            btnDong.Location = new Point(630, 540);
+            btnDong.Size = new Size(150, 45);
+            btnDong.Click += (s, e) => Close();
 
             Controls.Add(btnThemGioHang);
             Controls.Add(btnDong);
         }
 
-        private Label TaoLabel(
-            string text,
-            int x,
-            int y)
+        private Label TaoLabel(string text, int x, int y)
         {
             Label lbl = new Label();
 
@@ -176,8 +159,7 @@ namespace shopABC.Forms
         private void LoadChiTiet()
         {
             DataTable dt =
-                ProductSystemAdapter
-                    .LayChiTietSanPham(maSanPham);
+                ProductSystemAdapter.LayChiTietSanPham(maSanPham);
 
             if (dt.Rows.Count == 0)
             {
@@ -234,30 +216,76 @@ namespace shopABC.Forms
                     ? ""
                     : row["ThongSoKyThuat"].ToString();
 
-            // Hình ảnh là tùy chọn
-            string hinhAnh =
-                row["HinhAnh"] == DBNull.Value
-                    ? ""
-                    : row["HinhAnh"].ToString();
-
-            if (!string.IsNullOrWhiteSpace(hinhAnh) &&
-                System.IO.File.Exists(hinhAnh))
-            {
-                try
-                {
-                    picSanPham.Image =
-                        Image.FromFile(hinhAnh);
-                }
-                catch
-                {
-                    picSanPham.Image = null;
-                }
-            }
+            // ===== LOAD HÌNH ẢNH =====
+            LoadHinhAnh(row);
 
             // Hết hàng → không cho thêm
             btnThemGioHang.Enabled =
-                ProductSystemAdapter
-                    .KiemTraConHang(maSanPham);
+                ProductSystemAdapter.KiemTraConHang(maSanPham);
+        }
+
+        // =====================================
+        // LOAD ẢNH SẢN PHẨM
+        // =====================================
+        private void LoadHinhAnh(DataRow row)
+        {
+            picSanPham.Image = null;
+
+            if (!row.Table.Columns.Contains("HinhAnh") ||
+                row["HinhAnh"] == DBNull.Value)
+            {
+                return;
+            }
+
+            string hinhAnh = row["HinhAnh"].ToString();
+
+            if (string.IsNullOrWhiteSpace(hinhAnh))
+            {
+                return;
+            }
+
+            try
+            {
+                string duongDan;
+
+                // Nếu DB đã chứa đường dẫn tuyệt đối
+                if (Path.IsPathRooted(hinhAnh))
+                {
+                    duongDan = hinhAnh;
+                }
+                else
+                {
+                    // Ví dụ DB lưu:
+                    // Images\SP001.jpg
+                    duongDan = Path.Combine(
+                        Application.StartupPath,
+                        hinhAnh
+                    );
+                }
+
+                if (!File.Exists(duongDan))
+                {
+                    return;
+                }
+
+                // Dùng stream để tránh khóa file ảnh
+                using (FileStream stream =
+                    new FileStream(
+                        duongDan,
+                        FileMode.Open,
+                        FileAccess.Read))
+                {
+                    using (Image temp = Image.FromStream(stream))
+                    {
+                        picSanPham.Image =
+                            new Bitmap(temp);
+                    }
+                }
+            }
+            catch
+            {
+                picSanPham.Image = null;
+            }
         }
 
         // =====================================
@@ -303,8 +331,7 @@ namespace shopABC.Forms
                 object result = Db.Scalar(
                     @"SELECT MaGioHang
                       FROM GIOHANG
-                      WHERE MaKhachHang =
-                            @MaKhachHang",
+                      WHERE MaKhachHang = @MaKhachHang",
 
                     new SqlParameter(
                         "@MaKhachHang",
@@ -344,10 +371,8 @@ namespace shopABC.Forms
                         Db.Scalar(
                             @"SELECT COUNT(*)
                               FROM CHITIETGIOHANG
-                              WHERE MaGioHang =
-                                    @MaGioHang
-                                AND MaSanPham =
-                                    @MaSanPham",
+                              WHERE MaGioHang = @MaGioHang
+                                AND MaSanPham = @MaSanPham",
 
                             new SqlParameter(
                                 "@MaGioHang",
@@ -366,10 +391,8 @@ namespace shopABC.Forms
                     Db.Execute(
                         @"UPDATE CHITIETGIOHANG
                           SET SoLuong = SoLuong + 1
-                          WHERE MaGioHang =
-                                @MaGioHang
-                            AND MaSanPham =
-                                @MaSanPham",
+                          WHERE MaGioHang = @MaGioHang
+                            AND MaSanPham = @MaSanPham",
 
                         new SqlParameter(
                             "@MaGioHang",
@@ -386,19 +409,19 @@ namespace shopABC.Forms
                 {
                     Db.Execute(
                         @"INSERT INTO CHITIETGIOHANG
-                            (
-                                MaGioHang,
-                                MaSanPham,
-                                SoLuong,
-                                DonGia
-                            )
-                          VALUES
-                            (
-                                @MaGioHang,
-                                @MaSanPham,
-                                1,
-                                @DonGia
-                            )",
+                        (
+                            MaGioHang,
+                            MaSanPham,
+                            SoLuong,
+                            DonGia
+                        )
+                        VALUES
+                        (
+                            @MaGioHang,
+                            @MaSanPham,
+                            1,
+                            @DonGia
+                        )",
 
                         new SqlParameter(
                             "@MaGioHang",
